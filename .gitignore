@@ -1,52 +1,177 @@
-# Prerequisites
-*.d
+#include <stdio.h>
+#include <stdlib.h>
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+typedef int TGeneration[50][50];
 
-# Linker output
-*.ilk
-*.map
-*.exp
+void mise0(TGeneration m, int *nbLignes , int *nbColonnes){
+    int i, j;
+    printf("\nLe Tableau de generation est definie par n lignes et m colonnes.\n");
+    printf("\tSaisir n : ");
+    scanf("%d", nbLignes);
+    printf("\tSaisir m : ");
+    scanf("%d", nbColonnes);
+    for(i=1; i<=*nbLignes; i++)
+    {
+        for(j=1; j<=*nbColonnes; j++)
+        {
+            m[i][j]=0;
+        }
+    }
+}
+void saisirLeTabDeGene(TGeneration m,int nbLignes, int nbColonnes){
+    int i,j,k,choixcase,lignes,colonnes;
 
-# Precompiled Headers
-*.gch
-*.pch
+    printf("\nCombien de case voulez-vous modifier?\nSaisie:");
+    scanf("%d", &choixcase);
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+    if (choixcase>0){
+            for (k=0;k<choixcase;k++){
+        printf("\n%d.Quelle ligne ? ",k);
+        scanf("%d",&lignes);
+        printf("%d.Quelle colonne ? ",k);
+        scanf("%d",&colonnes);
+        printf("\n");
+        m[lignes][colonnes]=1;
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+            }
+    }
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+    }
+void afficher_Tab(TGeneration m, int nbLignes, int nbColonnes){
+    int i, j;
+    printf("\nVoici donc votre tableau de generation:\n");
+
+        for(i=1; i<=nbLignes; i++)
+        {
+            for(j=1; j<=nbColonnes; j++)
+            {
+                printf("%d ", m[i][j]);
+            }
+            printf("\n");
+        }
+
+}
+void afficherGenerationSuivante(TGeneration m,TGeneration t, int nbLignes, int nbColonnes){
+int i,j,compteur=0;
+
+printf("\n\nLa generation qui suit est :\n\n");
+
+
+        for(i=1; i<nbLignes; i++){
+
+            for(j=1; j<nbColonnes; j++){
+                t[i][j]=m[i][j];
+
+               if (m[i][j]==0){
+
+
+                    if (m[i-1][j-1]==1 ){
+                        compteur++;
+                            }
+                    if (m[i-1][j]==1){
+                        compteur++;
+                    }
+                    if (m[i-1][j+1]==1){
+                        compteur++;
+                    }
+                    if (m[i][j-1]==1){
+                        compteur++;
+                    }
+                    if (m[i][j+1]==1){
+                        compteur++;
+                    }
+                    if (m[i+1][j-1]==1){
+                        compteur++;
+                    }
+                    if (m[i+1][j]==1){
+                        compteur++;
+                    }
+                    if (m[i+1][j+1]==1){
+                        compteur++;
+                    }
+                    if (compteur==3){
+                        m[i][j]=1;
+                    }
+                    compteur=0;
+            }
+            else if (m[i][j]==1){
+                  if (m[i-1][j-1]==1 ){
+                        compteur++;
+                            }
+                    if (m[i-1][j]==1){
+                        compteur++;
+                    }
+                    if (m[i-1][j+1]==1){
+                        compteur++;
+                    }
+                    if (m[i][j-1]==1){
+                        compteur++;
+                    }
+                    if (m[i][j+1]==1){
+                        compteur++;
+                    }
+                    if (m[i+1][j-1]==1){
+                        compteur++;
+                    }
+                    if (m[i+1][j]==1){
+                        compteur++;
+                    }
+                    if (m[i+1][j+1]==1){
+                        compteur++;
+                    }
+                    if (compteur==3 || compteur==2){
+                        m[i][j]=1;
+                    }
+                    compteur=0;
+            }
+
+        else m[i][j]=0;
+    }
+}
+}
+void validation(TGeneration m,TGeneration t, int nbLignes, int nbColonnes,int *g){
+ int i,j;
+        for (i=1;i<=nbLignes;i++){
+            for (j=1;j<=nbColonnes;j++){
+                if (t[i][j]!=m[i][j]){
+                    g=0;
+                }
+                else if (t[i][j]==m[i][j]){
+                        g=1;
+            }
+        }
+
+
+ //return g;
+}
+}
+
+
+void main()
+{
+    int i,j,k,n,g=0,compteur=0,nbLignes,nbColonnes,choixcase,choixgene,lignes,colonnes;
+    TGeneration m;
+    TGeneration t;
+    mise0(m,&nbLignes,&nbColonnes);
+    saisirLeTabDeGene(m,nbLignes,nbColonnes);
+    afficher_Tab(m,nbLignes,nbColonnes);
+
+    printf("\n\nCombien de generation suivante voulez vous ?\n\n");
+    scanf("%d",&choixgene);
+
+
+    for (n=1;n<=choixgene;n++){
+
+
+    afficherGenerationSuivante(m,t,nbLignes,nbColonnes);
+    validation(m,t,nbLignes,nbColonnes,&g);
+    afficher_Tab(m,nbLignes,nbColonnes);
+   if (g==1){
+    printf("La generation n'evolue plus");
+   }
+    }
+
+
+    }
